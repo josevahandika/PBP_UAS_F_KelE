@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_tambah_edit_buku"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvTambahEditTransaksi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah Transaksi"
+            android:textSize="30dp"
+            android:textColor="@color/text"
+            android:gravity="center"
+            android:textStyle="bold"/>
+        <!--        Image?-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:gravity="center_horizontal"-->
+        <!--            android:orientation="vertical">-->
+
+        <!--            <FrameLayout-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginBottom="5dp"-->
+        <!--                android:background="@color/colorPrimary">-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/ivGambar"-->
+        <!--                    android:layout_width="50dp"-->
+        <!--                    android:layout_height="50dp"-->
+        <!--                    android:layout_margin="2dp"-->
+        <!--                    android:scaleType="centerCrop"/>-->
+        <!--&lt;!&ndash;                                    app:srcCompat="@drawable/noimage" &ndash;&gt;-->
+        <!--            </FrameLayout>-->
+        <!--&lt;!&ndash;            <com.google.android.material.button.MaterialButton&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:id="@+id/btnUnggah"&ndash;&gt;-->
+        <!--&lt;!&ndash;                style="@style/Widget.MaterialComponents.Button"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:drawableLeft="@drawable/ic_baseline_cloud_upload_24"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:drawableTint="@color/text"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:paddingLeft="10dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:paddingRight="10dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:text="Unggah"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:textAllCaps="true"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:textColor="@color/text"&ndash;&gt;-->
+        <!--&lt;!&ndash;                android:textSize="12sp"&ndash;&gt;-->
+        <!--&lt;!&ndash;                app:backgroundTint="@color/alt"&ndash;&gt;-->
+        <!--&lt;!&ndash;                app:cornerRadius="15dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;                app:iconTint="@color/text" />&ndash;&gt;-->
+        <!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Paket"
+                android:textColorHint="@color/text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtPaket"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Harga"
+                android:textColorHint="@color/text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtHarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Berat"
+                android:textColorHint="@color/text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtBerat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Total Harga"
+                android:textColorHint="@color/text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtTotalHarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Lama Pengerjaan"
+                android:textColorHint="@color/text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtLamaPengerjaan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Status"
+                android:textColorHint="@color/text"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBatal"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Batal"
+                android:textColor="@color/text"
+                android:backgroundTint="@color/alt"
+                android:textSize="16sp"
+                app:cornerRadius="5dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSimpan"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="30dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:backgroundTint="@color/alt"
+                android:text="Simpan"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                app:cornerRadius="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

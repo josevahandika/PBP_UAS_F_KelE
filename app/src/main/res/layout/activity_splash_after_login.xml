@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".SplashActivity"
+        android:background="#edf6f9">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_laundry"
+            android:layout_gravity="center"
+            android:layout_marginTop="-10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JSM Laundry"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="#1d3557"
+            android:layout_gravity="center"
+            android:layout_marginTop="85dp"
+            android:id="@+id/JSM"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="115dp"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="#1d3557"
+            android:text="@string/hi"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNama"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginTop="140dp"
+            android:layout_gravity="center"
+            android:textColor="#1d3557"/>
+
+    </FrameLayout>
+</layout>

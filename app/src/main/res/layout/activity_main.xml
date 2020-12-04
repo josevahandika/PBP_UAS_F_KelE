@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <FrameLayout
+        android:id="@+id/fragment_transaksi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#edf6f9"
+        android:gravity="center">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.satriawibawa.myapplication.MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#edf6f9" />
+
+        <LinearLayout
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditProfile"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#edf6f9"
+                android:drawableLeft="@drawable/ic_baseline_settings_24" />
+
+<!--            <Button-->
+<!--                android:id="@+id/btnEditProfile"-->
+<!--                android:layout_width="56dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/rounded_corners"-->
+<!--                android:backgroundTint="#1d3557"-->
+<!--                android:drawableLeft="@drawable/ic_baseline_account_box_24" />-->
+
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="HOME"
+                android:textAlignment="center"
+                android:textColor="#1d3557"
+                android:textSize="40dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#edf6f9"
+                android:drawableLeft="@drawable/ic_baseline_power_settings_new_24" />
+
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/logout"-->
+<!--                android:id="@+id/btnLogout"-->
+<!--                android:background="@color/blue"/>-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:layout_below="@+id/topbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@drawable/circularbordersolid"
+                android:layout_marginHorizontal="70dp"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/ic_laundry"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JSM Laundry"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:textColor="#1d3557"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/companyinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circularbordersolid"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_marginTop="90dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnRiwayat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#20639b"
+                            android:drawableTop="@drawable/ic_baseline_library_books_24"
+                            android:text="@string/riwayat" />
+
+                        <Button
+                            android:id="@+id/btnDaftar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:backgroundTint="#20639b"
+                            android:drawableTop="@drawable/ic_baseline_home_work_24"
+                            android:text="@string/daftar" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circularbordersolid"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnTransaksi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#20639b"
+                            android:drawableTop="@drawable/ic_baseline_note_add_24"
+                            android:text="@string/transaksi" />
+
+                        <Button
+                            android:id="@+id/btnPesan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:backgroundTint="#20639b"
+                            android:drawableTop="@drawable/ic_baseline_message_24"
+                            android:text="@string/pesan" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+    </FrameLayout>
+</layout>

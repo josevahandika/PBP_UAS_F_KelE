@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "283960453277",
+    "firebase_url": "https://jsmlaundry-52e21.firebaseio.com",
+    "project_id": "jsmlaundry-52e21",
+    "storage_bucket": "jsmlaundry-52e21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283960453277:android:6e3d1dca90dd36d1d38c74",
+        "android_client_info": {
+          "package_name": "com.satriawibawa.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283960453277-hfj720tcmcedkm953ott9elqflumolli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAigQaHcN3oYsPOFbfKIsF5q1xvT7WzrOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283960453277-hfj720tcmcedkm953ott9elqflumolli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

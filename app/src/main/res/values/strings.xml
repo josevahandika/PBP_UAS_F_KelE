@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_login_sukses">Login Sukses</string>
+    <string name="text_register_sukses">Register Sukses</string>
+    <string name="text_login_error">Login Gagal</string>
+    <string name="text_register_error">Register Gagal</string>
+    <string name="text_field_empty">Input tidak boleh kosong</string>
+    <string name="text_username_exist">Username sudah register</string>
+
+    <string name="job_success">Job Success</string>
+    <string name="ui_ux_designer">UI/UX Designer</string>
+    <string name="descProfile">Filography is a mobile application for ordering photography services.
+The services provided to users are photography sessions with professional photographers in certain places, choosing a photography theme, and borrowing attributes for the shooting process. This application will make it easier for people to capture the moments in their life.</string>
+    <string name="desc">About Us</string>
+    <string name="contact">Contact</string>
+    <string name="hi">Hi</string>
+    <string name="login">Login</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="register_now">Register Now</string>
+    <string name="input_password">Input password</string>
+    <string name="input_username">Input username</string>
+    <string name="reguler_2_hari">Reguler (2 hari)</string>
+    <string name="quick_1_hari">Quick (1 hari)</string>
+    <string name="berapa_kg_pakaian">Berapa KG pakaian?</string>
+    <string name="isi_pakaian_per_kg">Isi pakaian (per KG)</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="pilihan_laundry">Pilihan Laundry</string>
+    <string name="pengantaran">Pengantaran</string>
+    <string name="ambil_sendiri">Ambil Sendiri</string>
+    <string name="on_process">On Process</string>
+    <string name="done">DONE</string>
+    <string name="logout">Logout</string>
+    <string name="cari">Cari</string>
+    <string name="daftar">Daftar</string>
+    <string name="riwayat">Riwayat</string>
+    <string name="input_number_phone">Input Number Phone</string>
+    <string name="edit_your_profile">Edit Your Profile</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoiam9zZXZhaGFuZGlrYSIsImEiOiJja2ZvdmxqNWIwM3dkMnFtcmM2ZmZiOGdmIn0.Gh9bSL7Ng39WewQwB9w7Pw</string>
+    <string name="start_navigation">Start Navigation</string>
+    <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
+    <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
+    <string name="username">Username</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="input_email">Input email</string>
+    <string name="email">Email</string>
+    <string name="transaksi">Transaksi</string>
+    <string name="pesan">Pesan</string>
+</resources>
