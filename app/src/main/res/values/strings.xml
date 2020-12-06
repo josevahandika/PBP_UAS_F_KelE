@@ -49,4 +49,20 @@ The services provided to users are photography sessions with professional photog
     <string name="email">Email</string>
     <string name="transaksi">Transaksi</string>
     <string name="pesan">Pesan</string>
+    <string-array name="statusPembayaran">
+        <item>Hutang</item>
+        <item>Lunas</item>
+    </string-array>
+
+    <string-array name="paket">
+        <item>Biasa</item>
+        <item>Cepat</item>
+        <item>Kilat</item>
+    </string-array>
+    <string name="nav_beranda">Beranda</string>
+    <string name="nav_transaksi">Transaksi</string>
+    <string name="nav_akun">Akun</string>
+    <string name="t_beranda">BERANDA</string>
+    <string name="t_akun">AKUN</string>
+    <string name="t_transaksi">TRANSAKSI</string>
 </resources>

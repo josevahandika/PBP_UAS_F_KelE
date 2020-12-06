@@ -5,7 +5,8 @@
     android:id="@+id/frame_tambah_edit_buku"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".Views.TambahEditLaundry">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,19 +69,16 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Paket"
-                android:textColorHint="@color/text"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtPaket"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
+                <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:id="@+id/edPaket"
+                    android:hint="Paket"
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -112,25 +110,8 @@
                     android:id="@+id/txtBerat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Total Harga"
-                android:textColorHint="@color/text"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtTotalHarga"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="14sp" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -145,24 +126,21 @@
                     android:id="@+id/txtLamaPengerjaan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Status"
-                android:textColorHint="@color/text"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtStatus"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
+                <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:id="@+id/edStatus"
+                    android:hint="Status"
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

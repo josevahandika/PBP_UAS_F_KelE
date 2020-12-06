@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -28,9 +26,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.satriawibawa.myapplication.API.LaundryAPI;
-import com.satriawibawa.myapplication.Adapter.AdapterLaundry;
-import com.satriawibawa.myapplication.Model.LaundryModel;
+import com.satriawibawa.myapplication.API.PesanAPI;
+import com.satriawibawa.myapplication.Adapter.AdapterPesan;
+import com.satriawibawa.myapplication.Model.Pesan;
 import com.satriawibawa.myapplication.R;
 
 import org.json.JSONArray;
@@ -42,47 +40,45 @@ import java.util.List;
 
 import static com.android.volley.Request.Method.GET;
 
-public class ViewsTransaksi extends Fragment {
+public class ViewsPesan extends Fragment {
+
     private RecyclerView recyclerView;
-    private AdapterLaundry adapter;
-    private List<LaundryModel> listLaundry;
+    private AdapterPesan adapter;
+    private List<Pesan> listPesan;
     private View view;
     private FloatingActionButton flyingAdd;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_views_transaksi, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_views_pesan, container, false);
+
         flyingAdd = view.findViewById(R.id.addBtn);
 
         flyingAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new TambahEditLaundry());
+                loadFragment(new TambahEditPesan());
             }
         });
-        loadDaftarLaundry();
+        setAdapter();
+        getPesan();
         return view;
     }
 
-//    @Override
+
+
+    //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setHasOptionsMenu(true);
 //    }
-
-
-    public void loadDaftarLaundry(){
-        setAdapter();
-        getLaundry();
-    }
-
+//
 //    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.menu_bar_pesan, menu);
 //        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.menu_bar_transaksi, menu);
 //
 //        MenuItem searchItem = menu.findItem(R.id.btnSearch);
 //
@@ -107,7 +103,6 @@ public class ViewsTransaksi extends Fragment {
 //        menu.findItem(R.id.btnAdd).setVisible(true);
 //    }
 //
-//
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        int id = item.getItemId();
@@ -115,12 +110,12 @@ public class ViewsTransaksi extends Fragment {
 //        if (id == R.id.btnAdd) {
 //            Bundle data = new Bundle();
 //            data.putString("status", "tambah");
-//            TambahEditLaundry tambahEditLaundry = new TambahEditLaundry();
-//            tambahEditLaundry.setArguments(data);
+//            TambahEditPesan tambahEditPesan = new TambahEditPesan();
+//            tambahEditPesan.setArguments(data);
 //
 //            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //            fragmentManager .beginTransaction()
-//                    .replace(R.id.frame_view_transaksi, tambahEditLaundry)
+//                    .replace(R.id.frame_view_buku, tambahEditPesan)
 //                    .commit();
 //        }
 //        return super.onOptionsItemSelected(item);
@@ -128,19 +123,20 @@ public class ViewsTransaksi extends Fragment {
 
 
     public void setAdapter(){
-        getActivity().setTitle("Daftar Laundry");
+        getActivity().setTitle("Daftar Pesan");
         /*Buat tampilan untuk adapter jika potrait menampilkan 2 data dalam 1 baris,
         sedangakan untuk landscape 4 data dalam 1 baris*/
-        listLaundry = new ArrayList<LaundryModel>();
-        recyclerView = view.findViewById(R.id.recycler_view_transaksi);
-        adapter = new AdapterLaundry(listLaundry, getContext(), new AdapterLaundry.deleteItemListener() {
+        listPesan = new ArrayList<Pesan>();
+        recyclerView = view.findViewById(R.id.recycler_view_pesan);
+        adapter = new AdapterPesan(listPesan,view.getContext(), new AdapterPesan.deleteItemListener() {
             @Override
             public void deleteItem(Boolean delete) {
                 if(delete){
-                    getLaundry();
+                    getPesan();
                 }
             }
         });
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
 //        if(getContext().getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT){
 //            recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 //        }else{
@@ -151,45 +147,42 @@ public class ViewsTransaksi extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-
-    public void getLaundry() {
+    public void getPesan() {
         //Tambahkan tampil buku disini
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(view.getContext());
         progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Menampilkan data Laundry");
+        progressDialog.setTitle("Menampilkan data pesan");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, LaundryAPI.URL_SELECT,
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, PesanAPI.URL_SELECT_USER,
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 progressDialog.dismiss();
-                //testing
                 Toast.makeText(view.getContext(), "tes", Toast.LENGTH_SHORT).show();
                 try {
                     JSONArray jsonArray = response.getJSONArray("data");
-                    if(!listLaundry.isEmpty())
-                        listLaundry.clear();
+                    System.out.println("masuk bang");
+                    if(!listPesan.isEmpty())
+                        listPesan.clear();
 
                     for (int i=0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
                         int id   = jsonObject.optInt("id");
-                        String paket   = jsonObject.optString("paket");
-                        double harga   = jsonObject.optDouble("harga");
-                        int berat   = jsonObject.optInt("berat");
-                        double total_harga = jsonObject.optDouble("total_harga");
-                        int lama_pengerjaan = jsonObject.optInt("lama_pengerjaan");
-                        String status = jsonObject.optString("status");
-                        String email = jsonObject.optString("email");
-                        LaundryModel laundry = new LaundryModel(paket, status,id,lama_pengerjaan,harga,total_harga, berat,email);
+                        String isi_pesan   = jsonObject.optString("isi_pesan");
+                        String pengirim   = jsonObject.optString("pengirim");
+                        String judul   = jsonObject.optString("judul");
 
-                        listLaundry.add(laundry);
+                        Pesan pesan = new Pesan(id, isi_pesan, judul, pengirim);
+
+                        listPesan.add(pesan);
                     }
+                    System.out.println("ukuran list" + listPesan.size());
                     adapter.notifyDataSetChanged();
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -207,14 +200,13 @@ public class ViewsTransaksi extends Fragment {
         });
         queue.add(stringRequest);
     }
+
     public void loadFragment(Fragment fragment) {
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
-                .replace(R.id.frame_view_transaksi,fragment)
+                .replace(R.id.frame_view_buku,fragment)
                 //.addToBackStack(null)
                 .commit();
     }
-
-
 }

@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.satriawibawa.myapplication.daopackage.AppDatabase;
 import com.satriawibawa.myapplication.daopackage.User;
 import com.satriawibawa.myapplication.databinding.ActivityEditProfileBinding;
@@ -40,6 +41,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static AppDatabase db;
     private Bitmap image;
     private FirebaseAuth fb = FirebaseAuth.getInstance();
+    private static final String TAG = "EmailPassword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     //new EditProfileTask().execute();
                     //sharedPref.setDataPicture(foto_profil);
                     ChangePasswordFirebase();
+//                    System.out.println("sampe password");
+//
+//                    System.out.println("sampe username");
                     Toast.makeText(EditProfileActivity.this, "Profil Berhasil Diubah!", Toast.LENGTH_SHORT).show();
+                    setFirebaseUsername();
                 }
                 catch(Exception e){
 
@@ -169,4 +175,25 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void setFirebaseUsername (){
+        username = binding.getUser().getUsername();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated.");
+                        }
+                    }
+                });
+    }
+
 }

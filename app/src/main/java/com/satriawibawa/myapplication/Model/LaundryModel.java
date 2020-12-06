@@ -3,27 +3,49 @@ package com.satriawibawa.myapplication.Model;
 import java.io.Serializable;
 
 public class LaundryModel implements Serializable {
- private String paket, status,email;
- private int idLaundry,lama_pengerjaan;
- private Double harga, berat, total_harga;
+    private String paket, status,email;
+    private int idLaundry,lama_pengerjaan;
+    private Double harga,  total_harga;
+    private int berat;
 
- public LaundryModel (int idLaundry, String email, String paket, Double harga, Double berat, Double total_harga, int lama_pengerjaan, String status ){
-     this.idLaundry = idLaundry;
-     this.email = email;
-     this.paket = paket;
-     this.harga = harga;
-     this.berat = berat;
-     this.total_harga = total_harga;
-     this.lama_pengerjaan = lama_pengerjaan;
-     this.status = status;
- }
- public LaundryModel(String paket, Double total_harga, Double berat){
-     this.paket = paket;
-     this.total_harga = total_harga;
-     this.berat = berat;
- }
+    public LaundryModel (int idLaundry, String email, String paket, Double harga, int berat, Double total_harga, int lama_pengerjaan, String status ){
+        this.idLaundry = idLaundry;
+        this.email = email;
+        this.paket = paket;
+        this.harga = harga;
+        this.berat = berat;
+        this.total_harga = total_harga;
+        this.lama_pengerjaan = lama_pengerjaan;
+        this.status = status;
+    }
 
-    public LaundryModel(int idLaundry, String paket, Double total_harga, Double berat){
+    public LaundryModel(String paket, String status, int lama_pengerjaan, Double harga, Double total_harga, int berat) {
+        this.paket = paket;
+        this.status = status;
+        this.lama_pengerjaan = lama_pengerjaan;
+        this.harga = harga;
+        this.total_harga = total_harga;
+        this.berat = berat;
+    }
+
+    public LaundryModel(String paket, String status, int idLaundry, int lama_pengerjaan, Double harga, Double total_harga, int berat, String email) {
+        this.paket = paket;
+        this.status = status;
+        this.idLaundry = idLaundry;
+        this.lama_pengerjaan = lama_pengerjaan;
+        this.harga = harga;
+        this.total_harga = total_harga;
+        this.berat = berat;
+        this.email = email;
+    }
+
+    public LaundryModel(String paket, Double total_harga, int berat){
+        this.paket = paket;
+        this.total_harga = total_harga;
+        this.berat = berat;
+    }
+
+    public LaundryModel(int idLaundry, String paket, Double total_harga, int berat){
         this.idLaundry = idLaundry;
         this.paket = paket;
         this.total_harga = total_harga;
@@ -77,11 +99,11 @@ public class LaundryModel implements Serializable {
         this.harga = harga;
     }
 
-    public Double getBerat() {
+    public int getBerat() {
         return berat;
     }
 
-    public void setBerat(Double berat) {
+    public void setBerat(int berat) {
         this.berat = berat;
     }
 

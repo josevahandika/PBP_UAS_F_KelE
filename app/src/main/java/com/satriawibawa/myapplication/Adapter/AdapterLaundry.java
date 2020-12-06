@@ -31,6 +31,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.satriawibawa.myapplication.API.LaundryAPI;
 import com.satriawibawa.myapplication.Laundry;
 import com.satriawibawa.myapplication.Model.LaundryModel;
+import com.satriawibawa.myapplication.Model.Pesan;
 import com.satriawibawa.myapplication.R;
 import com.satriawibawa.myapplication.Views.TambahEditLaundry;
 
@@ -49,15 +50,23 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
     private List<LaundryModel> laundryListFiltered;
     private Context context;
     private View view;
-    private int tempId;
-    private AdapterLaundry.deleteItemListener mListener;
+    private AdapterLaundry.deleteItemListener deleteItemListener;
 
-    public AdapterLaundry(Context context, List<LaundryModel> laundryList,
-                       AdapterLaundry.deleteItemListener mListener) {
-        this.context            = context;
-        this.laundryList        = laundryList;
-        this.laundryListFiltered = laundryList;
-        this.mListener          = mListener;
+//    public AdapterLaundry(List<LaundryModel> laundryList, List<LaundryModel> laundryListFiltered, Context context, AdapterLaundry.deleteItemListener deleteItemListener) {
+//        this.laundryList = laundryList;
+//        this.laundryListFiltered = laundryListFiltered;
+//        this.context = context;
+//        this.deleteItemListener = deleteItemListener;
+//    }
+
+    public AdapterLaundry(List<LaundryModel> laundryList, Context context, AdapterLaundry.deleteItemListener deleteItemListener) {
+        this.laundryList = laundryList;
+        this.context = context;
+        this.deleteItemListener = deleteItemListener;
+    }
+
+    public void setLaundryList(List<LaundryModel> laundryList) {
+        this.laundryList = laundryList;
     }
 
     public interface deleteItemListener {
@@ -66,36 +75,29 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
 
     @NonNull
     @Override
-    public AdapterLaundry.adapterLaundryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterLaundry.adapterLaundryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         view = layoutInflater.inflate(R.layout.activity_adapter_laundry, parent, false);
         return new AdapterLaundry.adapterLaundryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterLaundry.adapterLaundryViewHolder holder, int position) {
-        final LaundryModel laundry = laundryListFiltered.get(position);
+    public void onBindViewHolder(adapterLaundryViewHolder holder, int position) {
+        final LaundryModel laundry = laundryList.get(position);
 
-        NumberFormat formatter = new DecimalFormat("#,###");
+
         holder.txtNama.setText(laundry.getPaket());
         holder.txtHarga.setText(String.valueOf(laundry.getTotal_harga()));
         holder.txtBerat.setText(String.valueOf(laundry.getBerat()));
-//        holder.txtPengarang.setText(laundry.getTotal_harga());
-//        holder.txtPengarang.setText(laundry.getLama_pengerjaan());
-//        holder.txtPengarang.setText(laundry.getStatus());
-//        Glide.with(context)
-//                .load(LaundryAPI.URL_IMAGE+buku.getGambar())
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .skipMemoryCache(true)
-//                .into(holder.ivGambar);
+        //berat
 
         holder.ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            public void onClick(View view) {
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Bundle data = new Bundle();
                 data.putSerializable("laundry", laundry);
-                data.putString("status", "edit");
+                data.putString("status","edit");
                 TambahEditLaundry tambahEditLaundry = new TambahEditLaundry();
                 tambahEditLaundry.setArguments(data);
                 loadFragment(tambahEditLaundry);
@@ -104,14 +106,13 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
 
         holder.ivHapus.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage("Anda yakin ingin menghapus transaksi ?");
                 builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        tempId = laundry.getIdLaundry();
-                        deleteLaundry();
+                        deleteLaundry(laundry.getIdLaundry());
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -128,7 +129,7 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
 
     @Override
     public int getItemCount() {
-        return (laundryListFiltered != null) ? laundryListFiltered.size() : 0;
+        return laundryList.size();
     }
 
     public class adapterLaundryViewHolder extends RecyclerView.ViewHolder {
@@ -140,36 +141,35 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
             super(itemView);
             txtNama         = itemView.findViewById(R.id.tvNamaPaket);
             txtHarga        = itemView.findViewById(R.id.tvHarga);
-            txtBerat    = itemView.findViewById(R.id.tvBerat);
-            //ivGambar        = itemView.findViewById(R.id.ivGambar);
+            txtBerat        = itemView.findViewById(R.id.tvBerat);
+//            ivGambar        = itemView.findViewById(R.id.ivGambar);
             ivEdit          = (TextView) itemView.findViewById(R.id.ivEdit);
             ivHapus         = (TextView) itemView.findViewById(R.id.ivHapus);
             cardLaundry        = itemView.findViewById(R.id.cardTransaksi);
         }
     }
 
-    public Filter getFilter() {
+    public Filter getFilter(){
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String userInput = charSequence.toString();
-                if (userInput.isEmpty()) {
+                if(userInput.isEmpty()){
                     laundryListFiltered = laundryList;
-                }
-                else {
+                }else{
                     List<LaundryModel> filteredList = new ArrayList<>();
-//                    for(LaundryModel laundry : laundryList) {
-//                        if(String.valueOf(laundry.getPaket()).toLowerCase().contains(userInput) ||
-//                                laundry.getTotal_harga(), laundry.getBerat().) {
-//                            filteredList.add(laundry);
-//                        }
-//                    }
+                    for (LaundryModel laundry : laundryList){
+                        if(String.valueOf(laundry.getPaket()).toLowerCase().contains(userInput)){
+                            filteredList.add(laundry);
+                        }
+                    }
                     laundryListFiltered = filteredList;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = laundryListFiltered;
                 return filterResults;
             }
+
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 laundryListFiltered = (ArrayList<LaundryModel>) filterResults.values;
@@ -178,17 +178,16 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
         };
     }
 
-    public void loadFragment(Fragment fragment) {
+    public void loadFragment(Fragment fragment){
         AppCompatActivity activity = (AppCompatActivity) view.getContext();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.recycler_view_transaksi,fragment)
+        fragmentTransaction.replace(R.id.frame_view_transaksi,fragment)
                 .commit();
     }
 
-    public void deleteLaundry(){
-        //Tambahkan hapus buku disini
-        //Pendeklarasian queue
+
+    public void deleteLaundry(int id){
         RequestQueue queue = Volley.newRequestQueue(context);
 
         final ProgressDialog progressDialog;
@@ -199,7 +198,7 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
         progressDialog.show();
 
         //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest stringRequest = new StringRequest(DELETE, LaundryAPI.URL_DELETE + tempId, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(DELETE, LaundryAPI.URL_DELETE + id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
@@ -210,7 +209,7 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
                     //obj.getString("message") digunakan untuk mengambil pesan message dari response
                     Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();
-                    mListener.deleteItem(true);
+                    deleteItemListener.deleteItem(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -223,7 +222,6 @@ public class AdapterLaundry extends RecyclerView.Adapter<AdapterLaundry.adapterL
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
     }

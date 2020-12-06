@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.satriawibawa.myapplication.API.LaundryAPI;
 import com.satriawibawa.myapplication.Model.LaundryModel;
 import com.satriawibawa.myapplication.R;
@@ -52,10 +56,10 @@ import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
 public class TambahEditLaundry extends Fragment {
-    private TextInputEditText txtNamaPaket, txtBerat, txtHarga;
+    private TextInputEditText txtNamaPaket, txtBerat, txtHarga,txtLamaPengerjaan, txtStatus;
     private ImageView ivGambar;
     private Button btnSimpan, btnBatal, btnUnggah;
-    private String status, selected, convertionImage="";
+    private String status, selectedPaket, selectedSP, email;
     private int idLaundry;
     private LaundryModel laundryModel;
     private View view;
@@ -63,12 +67,47 @@ public class TambahEditLaundry extends Fragment {
     private Uri selectedImage = null;
     private static final int PERMISSION_CODE = 1000;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tambah_edit_laundry, container, false);
-        init();
-        //setAttribut();
+        setAttribut(view);
+
+
+        btnSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(txtHarga.getText().length()<1 || txtLamaPengerjaan.getText().length()<1||
+                        txtBerat.getText().length()<1)
+                {
+                    if(txtLamaPengerjaan.getText().length()<1)
+                        txtLamaPengerjaan.setError("Data Tidak Boleh Kosong");
+                    if(txtHarga.getText().length() <1)
+                        txtHarga.setError("Data Tidak Boleh Kosong");
+                    if(txtBerat.getText().length()<1)
+                        txtBerat.setError("Data Tidak Boleh Kosong");
+                }
+                else
+                {
+                    String harga      = txtHarga.getText().toString();
+                    String berat     = txtBerat.getText().toString();
+                    String lamaPengerjaan = txtLamaPengerjaan.getText().toString();
+
+                    if(status.equals("tambah"))
+                        tambahLaundry(harga, berat, lamaPengerjaan, selectedPaket, selectedSP);
+                    else
+                        editLaundry(idLaundry, harga, berat, lamaPengerjaan, selectedPaket, selectedSP);
+                }
+            }
+        });
+
+        btnBatal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new ViewsTransaksi());
+            }
+        });
 
         return view;
     }
@@ -84,175 +123,78 @@ public class TambahEditLaundry extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-    public void init(){
-        laundryModel   = (LaundryModel) getArguments().getSerializable("laundry");
-        txtNamaPaket        = view.findViewById(R.id.txtPaket);
-        txtHarga            = view.findViewById(R.id.txtHarga);
-        txtBerat            = view.findViewById(R.id.txtBerat);
-        btnSimpan           = view.findViewById(R.id.btnSimpan);
-        btnBatal            = view.findViewById(R.id.btnBatal);
-//        btnUnggah           = view.findViewById(R.id.btnUnggah);
-//        ivGambar            = view.findViewById(R.id.ivGambar);
-
-        status = getArguments().getString("status");
-        if(status.equals("edit"))
-        {
-            idLaundry = laundryModel.getIdLaundry();
-            txtNamaPaket.setText(laundryModel.getPaket());
-            txtHarga.setText(String.valueOf(laundryModel.getTotal_harga()));
-            txtHarga.setText(String.valueOf(Math.round(laundryModel.getHarga())));
-//            Glide.with(view.getContext())
-//                    .load(LaundryAPI.URL_IMAGE +buku.getGambar())
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .skipMemoryCache(true)
-//                    .into(ivGambar);
-        }
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if(menu.findItem(R.id.btnSearch) != null)
+            menu.findItem(R.id.btnSearch).setVisible(false);
+        if(menu.findItem(R.id.btnAdd) != null)
+            menu.findItem(R.id.btnAdd).setVisible(false);
     }
 
-//    private void setAttribut() {
-//        btnUnggah.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
-//             //   View view = layoutInflater.inflate(R.layout.pilih_media, null);
-//
-//                final AlertDialog alertD = new AlertDialog.Builder(view.getContext()).create();
-//
-//                Button btnKamera = (Button) view.findViewById(R.id.btnKamera);
-//                Button btnGaleri = (Button) view.findViewById(R.id.btnGaleri);
-//
-//                btnKamera.setOnClickListener(new View.OnClickListener() {
-//                    public void onClick(View v) {
-//                        selected="kamera";
-//                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-//                        {
-//                            if(getActivity().checkSelfPermission(Manifest.permission.CAMERA)==
-//                                    PackageManager.PERMISSION_DENIED ||
-//                                    getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-//                                            PackageManager.PERMISSION_DENIED){
-//                                String[] permission = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-//                                requestPermissions(permission,PERMISSION_CODE);
-//                            }
-//                            else{
-//                                openCamera();
-//                            }
-//                        }
-//                        else{
-//                            openCamera();
-//                        }
-//                        alertD.dismiss();
-//                    }
-//                });
-//
-//                btnGaleri.setOnClickListener(new View.OnClickListener() {
-//                    public void onClick(View v) {
-//                        selected="galeri";
-//                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
-//                        {
-//                            if(getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-//                                    PackageManager.PERMISSION_DENIED){
-//                                String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-//                                requestPermissions(permission,PERMISSION_CODE);
-//                            }
-//                            else{
-//                                openGallery();
-//                            }
-//                        }
-//                        else{
-//                            openGallery();
-//                        }
-//                        alertD.dismiss();
-//                    }
-//                });
-//
-//                alertD.setView(view);
-//                alertD.show();
-//            }
-//        });
-//
-//        btnSimpan.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String namaPaket  = txtNamaPaket.getText().toString();
-//                String harga = txtHarga.getText().toString();
-//                String berat = txtBerat.getText().toString();
-//
-//
-//                if(namaPaket.isEmpty() || harga.isEmpty() || berat.isEmpty())
-//                    Toast.makeText(getContext(), "Data Tidak Boleh Kosong !", Toast.LENGTH_SHORT).show();
-//                else{
-//                    laundryModel = new LaundryModel(namaPaket, Double.parseDouble(harga), Double.parseDouble(berat));
-//                    if(status.equals("tambah"))
-//                        tambahLaundry();
-//                    else
-//                        editLaundry();
-//                }
-//            }
-//        });
-//
-//        btnBatal.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loadFragment(new ViewsTransaksi());
-//            }
-//        });
-//    }
 
-//    private void openGallery(){
-//        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(i, 1);
-//    }
-//
-//    private void openCamera() {
-//
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(intent,2);
-//    }
+    private void setAttribut(View view) {
+        try {
+            laundryModel = (LaundryModel) getArguments().getSerializable("laundry");
+            status = getArguments().getString("status");
+        } catch (Exception e){
+            status = "tambah";
+        }
+        txtHarga = view.findViewById(R.id.txtHarga);
+        txtBerat = view.findViewById(R.id.txtBerat);
+        txtLamaPengerjaan = view.findViewById(R.id.txtLamaPengerjaan);
+        btnSimpan = view.findViewById(R.id.btnSimpan);
+        btnBatal = view.findViewById(R.id.btnBatal);
+        final String[] PaketArray = getResources().getStringArray(R.array.paket);
+        final String[] SPArray = getResources().getStringArray(R.array.statusPembayaran);
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        switch (requestCode){
-//            case PERMISSION_CODE:{
-//                if(grantResults.length > 0 && grantResults[0] ==
-//                        PackageManager.PERMISSION_GRANTED){
-//                    if(selected.equals("kamera"))
-//                        openCamera();
-//                    else
-//                        openGallery();
-//                }else{
-//                    Toast.makeText(getContext() ,"Permision denied",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1)
+        if(status.equals("tambah"))
         {
-            selectedImage = data.getData();
-            try {
-                //InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                //bitmap = BitmapFactory.decodeStream(inputStream);
-            } catch (Exception e) {
-                Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            selectedPaket = PaketArray[0];
+            selectedSP = SPArray[0];
+        }
+        else
+        {
+            email = laundryModel.getEmail();
+            System.out.println("email" + email);
+            idLaundry = laundryModel.getIdLaundry();
+            txtBerat.setText(String.valueOf(laundryModel.getBerat()));
+            txtLamaPengerjaan.setText(String.valueOf(laundryModel.getLama_pengerjaan()));
+            txtHarga.setText(String.format("%.0f",laundryModel.getHarga()));
+            for(String pk : PaketArray)
+            {
+                if(pk.equals(laundryModel.getPaket()))
+                    selectedPaket = pk;
             }
-            //ivGambar.setImageBitmap(bitmap);
-            //bitmap = getResizedBitmap(bitmap, 512);
+            for(String hutang : SPArray)
+            {
+                if(hutang.equals(laundryModel.getStatus()))
+                    selectedSP = hutang;
+            }
         }
-        else if(resultCode == RESULT_OK && requestCode == 2)
-        {
-            Bundle extras = data.getExtras();
-//            bitmap = (Bitmap) extras.get("data");
-//            ivGambar.setImageBitmap(bitmap);
-            //bitmap = getResizedBitmap(bitmap, 512);
-        }
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-//        byte[] byteArray = byteArrayOutputStream .toByteArray();
-//        convertionImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.paket, android.R.layout.simple_spinner_item);
+        final AutoCompleteTextView paketDropdown = view.findViewById(R.id.edPaket);
+        paketDropdown.setText(selectedPaket);
+        paketDropdown.setAdapter(adapter);
+        paketDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedPaket = paketDropdown.getEditableText().toString();
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
+                R.array.statusPembayaran, android.R.layout.simple_spinner_item);
+        final AutoCompleteTextView SPDropdown = view.findViewById(R.id.edStatus);
+        SPDropdown.setText(selectedSP);
+        SPDropdown.setAdapter(adapter2);
+        SPDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedSP = SPDropdown.getEditableText().toString();
+            }
+        });
     }
 
     public void loadFragment(Fragment fragment) {
@@ -267,145 +209,118 @@ public class TambahEditLaundry extends Fragment {
                 .commit();
     }
 
-    public void closeFragment(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.hide(TambahEditLaundry.this).detach(this)
-                .attach(this).commit();
-    }
-
-//    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
-//        int width = image.getWidth();
-//        int height = image.getHeight();
-//
-//        float bitmapRatio = (float)width / (float) height;
-//        if (bitmapRatio > 1) {
-//            width = maxSize;
-//            height = (int) (width / bitmapRatio);
-//        } else {
-//            height = maxSize;
-//            width = (int) (height * bitmapRatio);
-//        }
-//        return Bitmap.createScaledBitmap(image, width, height, true);
-//    }
-
-    public void tambahLaundry(){
-        //Tambahkan tambah buku disini
-        //Pendeklarasian queue
+    public void tambahLaundry(final String berat, final String harga, final String lamaPengerjaan,  final String selectedPaket, final String selectedSP){
         RequestQueue queue = Volley.newRequestQueue(getContext());
+        final double totalHarga = Double.parseDouble(berat)*Double.parseDouble(harga);
+//        RequestQueue queue = Volley.newRequestQueue(getContext());
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Menambahkan data buku");
+        progressDialog.setMessage("loading...");
+        progressDialog.setTitle("Menambahkan data laundry");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        //Memulai membuat permintaan request menghapus data ke jaringan
         StringRequest stringRequest = new StringRequest(POST, LaundryAPI.URL_ADD, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
                 progressDialog.dismiss();
+                Toast.makeText(getContext(), "masukrespn", Toast.LENGTH_SHORT).show();
                 try {
-                    //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
-                    //obj.getString("message") digunakan untuk mengambil pesan status dari response
-                    if(obj.getString("status").equals("Success"))
-                    {
-                        loadFragment(new ViewsTransaksi());
-                    }
-
-                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
-                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+//                    if (obj.getString("status").equals("Success")) {
+                    loadFragment(new ViewsTransaksi());
+//                    }
+                    Toast.makeText(getContext(), "message", Toast.LENGTH_SHORT).show();
+                    //getActivity().finish();
+//                    getFragmentManager().popBackStack();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getContext(), "errrespn", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
+                Toast.makeText(getContext(), "errOnErro", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
-            protected Map<String, String> getParams()
-            {
-                /*
-                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,
-                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
-                    API.
-                */
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("namaPaket", laundryModel.getPaket());
-                params.put("harga", String.valueOf(laundryModel.getTotal_harga()));
-                params.put("berat", String.valueOf(laundryModel.getBerat())) ;
-
+            protected Map<String, String> getParams(){
+                // Disiniproses mengirimkan parameter key dengan data value dan nama key
+                //harus sesuai dengan paramater key yang diminta oleh jaringan key
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("paket",selectedPaket);
+                params.put("harga",harga);
+                params.put("berat",berat);
+                params.put("total_harga",String.valueOf(totalHarga));
+                params.put("lama_pengerjaan",lamaPengerjaan);
+                params.put("status",selectedSP);
+                email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                params.put("email",email);
                 return params;
             }
         };
-
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        // disini proses penambahan request yang sudah kita buat request queue yang sudah dideklarasi
         queue.add(stringRequest);
     }
 
-    public void editLaundry() {
-//        //Tambahkan edit buku disini
+    public void editLaundry(final int idLaundry, final String berat, final String harga, final String lamaPengerjaan,  final String selectedPaket, final String selectedSP){
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Mengubah data transaksi");
+        progressDialog.setTitle("Mengubah data laundry");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
+        final double totalHarga = Double.parseDouble(berat)*Double.parseDouble(harga);
 
-        //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest  stringRequest = new StringRequest(PUT, LaundryAPI.URL_UPDATE + idLaundry, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
-                progressDialog.dismiss();
-                try {
-                    //Mengubah response string menjadi object
-                    JSONObject obj = new JSONObject(response);
 
-                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
-                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+        //memulai membuat permintaan request menghapus data ke jaringan
+        StringRequest stringRequest = new StringRequest(PUT, LaundryAPI.URL_UPDATE + String.valueOf(idLaundry),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Disini bagian jika response jaringan berhasil tidak error
+                        progressDialog.dismiss();
+                        try {
+                            //Mengubah response String menjadi object
+                            JSONObject obj = new JSONObject(response);
 
-                    loadFragment(new ViewsTransaksi());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                            //obj get message digunakan untuk mengambil pesan dari response
+                            Toast.makeText(getContext(),obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            loadFragment(new ViewsTransaksi());
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
+                //disini bagian jika response jaringan terdapat gangguan/error
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "salah", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
-            protected Map<String, String> getParams()
-            {
-                /*
-                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,
-                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
-                    API.
-                */
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("namaPaket", laundryModel.getPaket());
-                params.put("harga", String.valueOf(laundryModel.getTotal_harga()));
-                params.put("berat", String.valueOf(laundryModel.getBerat()));
-                //params.put("gambar",convertionImage);
-
+            protected Map<String, String> getParams() {
+                // Disiniproses mengirimkan parameter key dengan data value dan nama key
+                //harus sesuai dengan paramater key yang diminta oleh jaringan key
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email",email);
+               // params.put("id",String.valueOf(idLaundry));
+                params.put("paket",selectedPaket);
+                params.put("harga",harga);
+                params.put("berat",berat);
+                params.put("total_harga",String.valueOf(totalHarga));
+                params.put("lama_pengerjaan",lamaPengerjaan);
+                params.put("status",selectedSP);
                 return params;
             }
         };
-
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
     }
 }

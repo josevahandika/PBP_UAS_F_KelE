@@ -231,6 +231,7 @@ public class RegisterActivity extends AppCompatActivity {
                 });
 
     }
+
 //    private class usernameException extends AsyncTask<Void, Void, Void>
 //    {
 //        User user = binding.getUser();

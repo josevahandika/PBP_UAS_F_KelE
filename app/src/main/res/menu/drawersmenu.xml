@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/Beranda"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:iconTint="#0091EA"
+            android:title="Beranda"
+            app:showAsAction="never"></item>
+
+        <item
+            android:id="@+id/Pesan"
+            android:icon="@drawable/ic_baseline_message_24"
+            android:iconTint="#0091EA"
+            android:title="Pesan"
+            app:showAsAction="never"></item>
+
+        <item
+            android:id="@+id/Transaksi"
+            android:icon="@drawable/ic_baseline_list_24"
+            android:iconTint="#0091EA"
+            android:title="Transaksi"
+            app:showAsAction="never"></item>
+
+        <item
+            android:id="@+id/Akun"
+            android:icon="@drawable/ic_baseline_account_box_24"
+            android:iconTint="#0091EA"
+            android:title="Akun"
+            app:showAsAction="never"></item>
+
+        <item
+            android:id="@+id/Keluar"
+            android:icon="@drawable/ic_baseline_exit_to_app_24"
+            android:iconTint="#0091EA"
+            android:title="Keluar"
+            app:showAsAction="never"></item>
+    </group>
+
+</menu>

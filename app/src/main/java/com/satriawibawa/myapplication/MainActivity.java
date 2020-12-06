@@ -12,9 +12,13 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.satriawibawa.myapplication.Views.TambahEditLaundry;
+import com.satriawibawa.myapplication.Views.ViewsPesan;
 import com.satriawibawa.myapplication.Views.ViewsTransaksi;
 import com.satriawibawa.myapplication.daopackage.AppDatabase;
 import com.satriawibawa.myapplication.databinding.ActivityMainBinding;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase db;
     private SharedPref pref;
     private String CHANNEL_ID ="Channel 1";
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
     private FirebaseAuth fb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +57,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent(MainActivity.this, ViewsTransaksi.class));
-                ViewsTransaksi viewsTransaksi = new ViewsTransaksi();
+                //ViewsTransaksi viewsTransaksi = new ViewsTransaksi();
 //                viewsTransaksi.setArguments(data);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_transaksi, viewsTransaksi)
-//                        .addToBackStack(null)
-                        .commit();
-                System.out.println("Commit bangggggggg");
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_transaksi, viewsTransaksi)
+////                        .addToBackStack(null)
+//                        .commit();
+//                System.out.println("Commit bangggggggg");
+//                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+//                if (activity != null) {
+//                    activity.getSupportActionBar().show();
+//                }
+                loadFragment(new ViewsTransaksi());
+                //onBackPressed();
             }
         });
-//        binding.btnPesan.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(MainActivity.this, ));
-//            }
-//        });
+        binding.btnPesan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                ViewsPesan viewsPesan = new ViewsPesan();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_transaksi, viewsPesan)
+//                        .commit();
+                loadFragment(new ViewsPesan());
+            }
+        });
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,5 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+    }
+    public void loadFragment(Fragment fragment) {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction
+                .replace(R.id.fragment_transaksi,fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="normal_radius">5dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="activity_padding">16dp</dimen>
+    <dimen name="placeholder">14dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+
+</resources>
