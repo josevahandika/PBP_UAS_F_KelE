@@ -151,18 +151,18 @@ public class ViewsPesan extends Fragment {
         //Tambahkan tampil buku disini
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(view.getContext());
-        progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Menampilkan data pesan");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+//        final ProgressDialog progressDialog;
+//        progressDialog = new ProgressDialog(view.getContext());
+//        progressDialog.setMessage("loading....");
+//        progressDialog.setTitle("Menampilkan data pesan");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progressDialog.show();
 
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, PesanAPI.URL_SELECT_USER,
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                progressDialog.dismiss();
+               // progressDialog.dismiss();
                 Toast.makeText(view.getContext(), "tes", Toast.LENGTH_SHORT).show();
                 try {
                     JSONArray jsonArray = response.getJSONArray("data");
@@ -193,7 +193,7 @@ public class ViewsPesan extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 Toast.makeText(view.getContext(), "error", Toast.LENGTH_SHORT).show();
                 Toast.makeText(view.getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }

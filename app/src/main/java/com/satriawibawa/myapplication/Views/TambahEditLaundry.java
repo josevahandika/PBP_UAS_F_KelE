@@ -1,4 +1,4 @@
-package com.satriawibawa.myapplication.Views;
+    package com.satriawibawa.myapplication.Views;
 
 import android.Manifest;
 import android.app.AlertDialog;
